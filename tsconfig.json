@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "outDir": "dist/",
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES5"
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "test/**/*.spec.ts"
+  ]
+}

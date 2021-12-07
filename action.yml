@@ -1,0 +1,12 @@
+name: AWS Params
+description: Retrieves parameters from AWS Systems Manager Parameter Store.
+inputs:
+  names:
+    description: The names of the parameters to fetch, comma separated
+    required: true
+  withDecryption:
+    description: Decrypt secure string values
+    required: true
+runs:
+  using: node12
+  main: dist/index.js
