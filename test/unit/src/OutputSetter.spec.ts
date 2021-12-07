@@ -5,18 +5,20 @@ import { Parameter } from '../../../src/ParameterFetcher'
 describe('OutputSetter', () => {
   let sandbox: SinonSandbox = createSandbox()
   let outputFn: SinonStub
+  let maskerFn: SinonStub
   let outputSetter: OutputSetter
 
   beforeEach(() => {
     outputFn = sandbox.stub()
-    outputSetter = new OutputSetter(outputFn)
+    maskerFn = sandbox.stub()
+    outputSetter = new OutputSetter(outputFn, maskerFn)
   })
 
   afterEach(() => {
     sandbox.restore()
   })
 
-  it('calls the outputFn with the expected params for every parameter', () => {
+  describe('#set', () => {
     const params: Parameter[] = [
       {
         name: 'test-name',
@@ -28,10 +30,24 @@ describe('OutputSetter', () => {
       }
     ]
 
-    outputSetter.set(params)
+    it('calls the outputFn with the expected params for every parameter', () => {
+      maskerFn.returns(null)
 
-    outputFn.should.have.been.calledTwice
-    outputFn.should.have.been.calledWithExactly(params[0].name, params[0].value)
-    outputFn.should.have.been.calledWithExactly(params[1].name, params[1].value)
+      outputSetter.set(params)
+
+      outputFn.should.have.been.calledTwice
+      outputFn.should.have.been.calledWithExactly(params[0].name, params[0].value)
+      outputFn.should.have.been.calledWithExactly(params[1].name, params[1].value)
+    })
+
+    it('registers the secrets with the masker', () => {
+      maskerFn.returns(null)
+
+      outputSetter.set(params)
+
+      maskerFn.should.have.been.calledTwice
+      maskerFn.should.have.been.calledWithExactly(params[0].value)
+      maskerFn.should.have.been.calledWithExactly(params[1].value)
+    })
   })
 })
